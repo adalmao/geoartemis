@@ -1,4 +1,5 @@
 .idea/
+.env
 local_settings.py
 __pycache__/
 django-longer-username-and-email
