@@ -1,5 +1,3 @@
-import sendgrid
-from sendgrid.helpers.mail import *
 # from proteccion_ambiental.settings import SENDGRID_KEY
 
 

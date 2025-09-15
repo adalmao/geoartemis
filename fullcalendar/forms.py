@@ -5,7 +5,7 @@ from django.forms import ModelChoiceField, ModelForm, ModelMultipleChoiceField
 # from accounts.functions import get_users_of_member_group, get_member_group
 from fullcalendar.models import Calendar, Events
 from main.functions import add_form_control_class, add_class_time_picker
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 # from aula_virtual.models import Company
 

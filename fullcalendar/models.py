@@ -1,7 +1,7 @@
 from django.contrib.auth.models import Group, User
 from django.db import models
 from django.template import defaultfilters
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 # from aula_virtual.models import Company
 # from proteccion_ambiental.settings import COMPANY_JRA_SLUG
@@ -13,8 +13,8 @@ class Calendar(models.Model):
     title = models.CharField(_('title'), max_length=200, null=False, blank=None)
     # company = models.ForeignKey(Company, related_name="company", null=False)
     slug = models.SlugField(max_length=100)
-    users = models.ManyToManyField(User, related_name="users", verbose_name=_('shared with'),null=True,blank=True)
-    created_by = models.ForeignKey(User, related_name="created_by")
+    users = models.ManyToManyField(User, related_name="users", verbose_name=_('shared with'),blank=True)
+    created_by = models.ForeignKey(User, related_name="created_by",on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -47,8 +47,8 @@ class Calendar(models.Model):
 
 
 class Accessibility(models.Model):
-    calendar = models.ForeignKey(Calendar)
-    group = models.ForeignKey(Group)
+    calendar = models.ForeignKey(Calendar,on_delete=models.CASCADE)
+    group = models.ForeignKey(Group,on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -60,16 +60,16 @@ class EventType(models.Model):
 
 
 class Events(models.Model):
-    calendar = models.ForeignKey(Calendar)
+    calendar = models.ForeignKey(Calendar,on_delete=models.CASCADE)
     event_start = models.DateTimeField()
     event_end = models.DateTimeField()
     title = models.CharField(max_length=200)
     description = models.TextField()
     observation = models.TextField(blank=True, null=True)
-    member = models.ForeignKey(User)
-    type = models.ForeignKey(EventType)
+    member = models.ForeignKey(User,on_delete=models.CASCADE)
+    type = models.ForeignKey(EventType,on_delete=models.CASCADE)
     is_cancelled = models.BooleanField(default=False)
 
-    created_by = models.ForeignKey(User, related_name="created_by_event")
+    created_by = models.ForeignKey(User, related_name="created_by_event",on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

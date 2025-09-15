@@ -1,9 +1,7 @@
 import datetime
 from django import forms
 from django.forms import ModelForm, HiddenInput
-from django.utils.translation import ugettext, ugettext_lazy as _
-from djrichtextfield.models import RichTextField
-from djrichtextfield.widgets import RichTextWidget
+from django.utils.translation import gettext as _
 
 from aula_virtual.functions import add_form_control_class, add_form_text,add_class_time_picker
 from .models import Company, Format, Accident, Employee, Course, Package, Package_User_Course, EspecificCourse, \

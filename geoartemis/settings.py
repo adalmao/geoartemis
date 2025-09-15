@@ -9,15 +9,15 @@ https://docs.djangoproject.com/en/1.9/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
-import locale
+from pathlib import Path
 import os
-try:
-    locale.setlocale(locale.LC_ALL, 'es_ES.UTF-8')
-except:
-    pass
+from decouple import config
+import json
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '2-)i!w)nq6+bq*8^!-q8o&pu_6752hv*^^49g5969*e$iu-v16'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = json.loads(config('DEBUG').lower())
 
 ALLOWED_HOSTS = ['*']
 
@@ -44,31 +44,27 @@ INSTALLED_APPS = [
     'aula_virtual',
     'accounts',
     'fullcalendar',
-    'djrichtextfield',
 ]
-# INSTALLED_APPS += 'djrichtextfield'
 if not DEBUG:
     INSTALLED_APPS.append('storages')
-DJRICHTEXTFIELD_CONFIG = {
-    'js': ['//cdn.ckeditor.com/4.4.4/standard/ckeditor.js'],
-    'init_template': 'djrichtextfield/init/tinymce.js',
-    'settings': {  # TinyMCE
-        'menubar': False,
-        'plugins': 'link image',
-        'toolbar': 'bold italic | link image | removeformat',
-        'width': 700
-    }
-}
-MIDDLEWARE_CLASSES = [
+
+MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+if not DEBUG:
+    MIDDLEWARE.append('redirect_to_non_www.middleware.RedirectToNonWww')
+    MIDDLEWARE.append('django.middleware.security.SecurityMiddleware')
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+
+
 LOGIN_REDIRECT_URL = '/aula_virtual/'
 ROOT_URLCONF = 'geoartemis.urls'
 
@@ -93,17 +89,31 @@ WSGI_APPLICATION = 'geoartemis.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'geoartemis',
+        'USER': 'postgres',
+        'PASSWORD': 'sperma901',
+        'HOST': 'localhost',
+        'PORT': '5434',
+    }
+}
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+'''
+if not DEBUG:
+    import dj_database_url
+    DATABASES['default'] = dj_database_url.config()
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
-DEFAULT_CHARSET = 'utf-8'
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend','accounts.backends.EmailAuthBackend']
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -118,7 +128,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-AUTHENTICATION_BACKENDS = ['accounts.backends.EmailOrUsernameModelBackend']
 
 STATUS = 'DOING'
 # Internationalization
@@ -135,28 +144,46 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID') 
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY') 
+AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_CUSTOM_DOMAIN = '{}.s3.amazonaws.com'.format(AWS_STORAGE_BUCKET_NAME)
 if DEBUG:
-    STATIC_ROOT = os.path.join(BASE_DIR, "static/")
-
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-    MEDIA_URL = '/media/'
+    STATIC_ROOT='static/'
     STATIC_URL = '/static/'
+    MEDIA_URL = '/media/'
 else:
-    AWS_ACCESS_KEY_ID = ''
-    AWS_SECRET_ACCESS_KEY = ''
-    AWS_STORAGE_BUCKET_NAME = 'geoartemis'
-    AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+    CDN_ENABLED = json.loads(config('CDN_ENABLED').lower())
+    AWS_DEFAULT_ACL = None
+    STATIC_DISTRIBUTION_ID = config('STATIC_DISTRIBUTION_ID')
+    AWS_S3_CDN_DOMAIN = '{}.cloudfront.net'.format(STATIC_DISTRIBUTION_ID)
     AWS_S3_OBJECT_PARAMETERS = {
         'CacheControl': 'max-age=86400',
     }
-    AWS_LOCATION = 'static/'
-    AWS_LOCATION_MEDIA = 'media/'
-
-    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    STATIC_URL = 'https://%s/%s' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
-    MEDIA_URL = "https://%s/%s" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION_MEDIA)
-    DEFAULT_FILE_STORAGE = 'geoartemis.storage_backends.MediaStorage'
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'static'),
+    ]
+    
+    STORAGES = {
+        "default": {
+            "BACKEND": "geoartemis.storage_backends.PublicMediaStorage",
+        },
+        "staticfiles" : {
+            "BACKEND": "geoartemis.storage_backends.StaticStorage",
+        },
+    }
+    STATIC_LOCATION = 'static'
+    
+    STATIC_URL = 'https://{}/{}/'.format(AWS_S3_CUSTOM_DOMAIN, STATIC_LOCATION)
+    OTHER_MEDIA_URL='https://{}/'.format(AWS_S3_CUSTOM_DOMAIN)
+    AWS_PUBLIC_MEDIA_LOCATION = 'media'
+    
+    AWS_PRIVATE_MEDIA_LOCATION = 'media'
+    PRIVATE_FILE_STORAGE = 'geoartemis.storage_backends.PrivateMediaStorage'
+    
+    MEDIA_URL = 'https://{}/{}/'.format(AWS_S3_CUSTOM_DOMAIN, AWS_PUBLIC_MEDIA_LOCATION)
+    
+    AWS_REGION="us-east-1"
 COMPANY_JRA_SLUG = 'jra'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 import datetime
 
 import unicodedata
 from unidecode import unidecode
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -17,7 +16,7 @@ from .forms import CompanyForm, FormatForm, AccidentForm, EmployeeForm, CourseFo
     ServiceForm
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.http import HttpResponse,JsonResponse
 import json
 from aula_virtual.functions import create_zoom_room

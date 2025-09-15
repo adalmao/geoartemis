@@ -3,9 +3,9 @@ import json
 from django import http
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from fullcalendar.forms import CalendarModelForm, EventsModelForm
 from fullcalendar.models import Calendar, Events

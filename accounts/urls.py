@@ -1,36 +1,30 @@
-from django.conf.urls import  url
-from django.utils.translation import ugettext as _
+from django.urls import  re_path
+from django.utils.translation import gettext as _
 from . import views
 from django.contrib.auth import views as vi
 
 from accounts.forms import SetPasswordFormEdited, AuthenticationFormEdited
-
+app_name = 'accounts'
 urlpatterns = [
-                       url(r'^message/(?P<code>[-\w]+)/$', views.message, name='message'),
-                       url(r'^users/new/$', views.user_new, name='user_new'),
-                       url(r'^profile/password/reset/$', views.password_reset, name='password_reset'),
-                       url(r'^sign-up/$', views.sign_up, name='sign_up'),
+                       re_path(r'^message/(?P<code>[-\w]+)/$', views.message, name='message'),
+                       re_path(r'^users/new/$', views.user_new, name='user_new'),
+                       re_path(r'^profile/password/reset/$', views.password_reset, name='password_reset'),
+                       re_path(r'^sign-up/$', views.sign_up, name='sign_up'),
 
                        ]
 
 urlpatterns += [
-                        url(r'^login/$', vi.login, {
-                            'template_name': 'accounts/login.html',
-                            'authentication_form': AuthenticationFormEdited,
-                            'extra_context': {
+                        re_path(r'^login/$', vi.LoginView.as_view(
+                            template_name= 'accounts/login.html',
+                            authentication_form= AuthenticationFormEdited,
+                            extra_context= {
                                 'page': {
                                     'title': _('Log in'),
                                 },
                             }
-                        }, name='login'),
-                        url(r'^logout/$', vi.logout, {
+                        ), name='login'),
+                        re_path(r'^logout/$', vi.LogoutView.as_view(), {
                             'next_page': '/',
                         }, name='logout'),
-                        url(r'^profile/password/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$',
-                            vi.password_reset_confirm, {
-                                'template_name': 'accounts/password_reset_confirm.html',
-                                'set_password_form': SetPasswordFormEdited,
-                                'post_reset_redirect': '/accounts/message/password_reset_confirm/',
-                            }, 'password_reset_confirm', ),
 
                         ]

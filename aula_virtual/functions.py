@@ -1,9 +1,6 @@
-import sendgrid
-from sendgrid.helpers.mail import *
 from django.conf import settings
 import requests
 import json
-# from geoartemis.settings import SENDGRID_KEY
 def create_zoom_room(title,start_time):
     body={   
         "topic": title,

@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm, SetPasswordForm, AuthenticationForm, \
     UserCreationForm
 from django.contrib.auth.models import User
 from django.forms import ModelForm
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from accounts.models import Person
 from main.functions import add_form_control_class
