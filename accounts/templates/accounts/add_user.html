@@ -1,0 +1,110 @@
+{% extends 'aula_virtual/layout.html' %}
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'main/css/compiled/new-user.css'%}" type="text/css" media="screen" />
+{% endblock %}
+{% block content %}
+<!-- settings changer -->
+        <div class="skins-nav">
+            <a href="#" class="skin first_nav selected">
+                <span class="icon"></span><span class="text">Default</span>
+            </a>
+            <a href="#" class="skin second_nav" data-file="css/compiled/skins/dark.css">
+                <span class="icon"></span><span class="text">Dark skin</span>
+            </a>
+        </div>
+
+        <div id="pad-wrapper" class="new-user">
+            <div class="row header">
+                <div class="col-md-12">
+                    <h3>Create a new user</h3>
+                </div>
+            </div>
+
+            <div class="row form-wrapper">
+                <!-- left column -->
+                <div class="col-md-9 with-sidebar">
+                    {% if message %}
+                        <div class="alert alert-danger alert-dismissible" role="alert">
+                            <strong>Error!</strong> {{ message }} {{ response }}
+                        </div>
+                    {% endif %}
+                    {% include 'main/hooks/form.html' %}
+
+
+
+                    <!-- <form class="new_user_form">
+                        <div class="col-md-12 field-box">
+                            <label>Name:</label>
+                            <input class="form-control" type="text" />
+                        </div>
+                        <div class="col-md-12 field-box">
+                            <label>State:</label>
+                            <div class="ui-select span5">
+                                <select>
+                                    <option value="AK">Alaska</option>
+                                    <option value="HI">Hawaii</option>
+                                    <option value="CA">California</option>
+                                    <option value="NV">Nevada</option>
+                                    <option value="OR">Oregon</option>
+                                    <option value="WA">Washington</option>
+                                    <option value="AZ">Arizona</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12 field-box">
+                            <label>Company:</label>
+                            <input class="col-md-9 form-control" type="text" />
+                        </div>
+                        <div class="col-md-12 field-box">
+                            <label>Email:</label>
+                            <input class="col-md-9 form-control" type="text" />
+                        </div>
+                        <div class="col-md-12 field-box">
+                            <label>Phone:</label>
+                            <input class="col-md-9 form-control" type="text" />
+                        </div>
+                        <div class="col-md-12 field-box">
+                            <label>Website:</label>
+                            <input class="col-md-9 form-control" type="text" />
+                        </div>
+                        <div class="col-md-12 field-box">
+                            <label>Address:</label>
+                            <div class="address-fields">
+                                <input class="form-control" type="text" placeholder="Street address" />
+                                <input class="small form-control" type="text" placeholder="City" />
+                                <input class="small form-control" type="text" placeholder="State" />
+                                <input class="small last form-control" type="text" placeholder="Postal Code" />
+                            </div>
+                        </div>
+                        <div class="col-md-12 field-box textarea">
+                            <label>Notes:</label>
+                            <textarea class="col-md-9"></textarea>
+                            <span class="charactersleft">90 characters remaining. Field limited to 100 characters</span>
+                        </div>
+                        <div class="col-md-11 field-box actions">
+                            <input type="button" class="btn-glow primary" value="Create user">
+                            <span>OR</span>
+                            <input type="reset" value="Cancel" class="reset">
+                        </div>
+                    </form> -->
+                </div>
+
+                <!-- side right column -->
+                <div class="col-md-3 form-sidebar">
+                    <div class="alert alert-info">
+                        <i class="icon-lightbulb pull-left"></i>
+                        Display a sidebar note over here
+                    </div>
+                    <h6>Sidebar text for instructions</h6>
+                    <p>Add multiple users at once</p>
+                    <p>Choose one of the following file types:</p>
+                    <ul>
+                        <li><a href="#">Upload a vCard file</a></li>
+                        <li><a href="#">Import from a CSV file</a></li>
+                        <li><a href="#">Import from an Excel file</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+{% endblock %}

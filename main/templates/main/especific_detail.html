@@ -1,0 +1,61 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+{% block content %}
+     <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-sm-offset-2 text-center">
+                    <h3>{{ title }}</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-left">
+                    <h4>Informacion del curso</h4>
+                    <b>Modalidad:</b><p>100% ON-LINE</p>
+                    <b>Duración:</b><p>{{ course_especific.duration }}</p>
+                    <b>Horarios:</b><p> El curso estará a su disposición las 24 horas, los 7 días a la semana durante 30 días.</p>
+                    <b>Beneficios:</b><p>{{ course_especific.benefits }}</p>
+                    <b>Certificacion:</b><p>{{ course_especific.certificate }}</p>
+                    {% if package %}
+                    <b>Inversion:</b><p>USD{{ package.package.price}}</p>
+                    {% endif %}
+                    <b>Informes:</b><p>contacto@geoartemis.com</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4>1. Introduccion</h4>
+                            <p>{{ course_especific.introduction |linebreaks }}
+                            </p>
+                            <h4>2. Objetivo</h4>
+                            <p>{{ course_especific.object |linebreaks}}
+                            </p>
+                            <h4>3. Dirigido a: </h4>
+                            <p>{{ course_especific.go_to |linebreaks}}
+                            </p>
+                            <h4>4. Temario Detallado</h4>
+                            <p>{{ course_especific.temario |linebreaks}}
+                            </p>
+                        </div>
+                        <div class="col-md-5 col-md-offset-1">
+                            <div class="">
+                                <div class="">
+                                     <img alt="image" src="{{ course_especific.file.url}}" />
+                                </div>
+                            </div>
+                            <!--end of barchart-->
+                        </div>
+                    </div>
+                    <!--end of row-->
+                </div>
+                <!--end of container-->
+            </section>
+{% endblock %}

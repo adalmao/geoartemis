@@ -1,0 +1,43 @@
+{% extends 'aula_virtual/layout_with_out_nav.html' %}
+{% block styles %}
+<style>
+    .content{
+        margin-left:0px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container-fluid">
+    
+    <div class="row">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="col-md-3"></div>
+            <a href="{% url 'aula_virtual:panel' company_jra_slug %}">
+            <div class="col-md-2 circulo1" align="center" width="200" height="200">
+                <br>
+                <br>
+                <br>
+                <h2>OSHAS 18001:2007</h2>
+            </div>
+        </a>
+
+        <div class="col-md-2"></div>
+
+        <a href="{% url 'aula_virtual:company_list' %}">
+            <div class="col-md-2 circulo2" align="center" width="200" height="200" class="img-responsive">
+                <br>
+                <br>
+                <h2>Ley 29783 Seguridad y Salud en el Trabajo</h2>
+            </div>
+        </a>
+    </div>
+</div>
+    {% endif %}
+{% endblock %}

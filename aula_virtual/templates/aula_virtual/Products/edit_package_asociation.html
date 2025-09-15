@@ -1,0 +1,31 @@
+{% extends 'aula_virtual/layout.html' %}
+{% block content %}
+<div id="pad-wrapper" class="new-user">
+    <div class="row header">
+        <h3>{{ title|safe|capfirst }}</h3>
+    </div>
+    <div style="margin-bottom: 50px;"><h4>{{ course.name }}</h4></div>
+        <div class="row form-wrapper">
+        <div class="col-md-9 with-sidebar">
+            <form action="." method="post">
+                {% csrf_token %}
+            <h5>Seleccione un paquete: </h5>
+            <select class="form-control" name="packege_requirement">
+                                {% for foo in packages %}
+                                    <option value="{{ foo.pk}}">{{ foo.title }}</option>
+                                {% endfor %}
+
+                            </select>
+
+
+                <div class="pull-right">
+                    <input type="submit" class="btn btn-primary pull-right" value="{{  save_text|default:'save' }}" name="_save">
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+</div>
+{% endblock %}

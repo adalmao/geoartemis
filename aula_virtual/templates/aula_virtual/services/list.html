@@ -1,0 +1,52 @@
+{% extends 'aula_virtual/layout.html' %}
+{% load static %}
+{% block more_styles %}
+{% endblock %}
+{% block content %}
+
+<div id="pad-wrapper" class="users-list">
+    <div class="row header">
+        <h3>Servicios</h3>
+    </div>
+    <div id="pad-wrapper" class="users-list">
+     <div class="col-md-6 col-sm-12 col-xs-12 pull-right">
+         {% if request.user.is_superuser %}
+        <a href="{% url 'aula_virtual:services_new' %}" class="btn-flat success pull-right">
+            <span>&#43;</span>
+            Nuevo Servicio
+        </a>
+         {% endif %}
+    </div>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th><span class="line"></span>Servicio</th>
+            {% if request.user.is_superuser %}<th><span class="line"></span>Opciones</th>{% endif %}
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for requirement in services %}
+        <tr>
+            <td><b>{{requirement.name}}</b></td>
+            {% if request.user.is_superuser %}
+                <td>
+                    <ul class="actions">
+                        <li><a href="{% url 'aula_virtual:services_edit' requirement.pk %}">Editar</a></li>
+                        <li class="last"><a href="{% url 'aula_virtual:services_delete' requirement.pk %}">Eliminar</a></li>
+                        <li class="last"><a href="{% url 'aula_virtual:services_details_list' requirement.pk %}">Ver detalles</a></li>
+
+                    </ul>
+            </td>
+            {% endif %}
+
+        </tr>
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+</div>
+{% endblock %}

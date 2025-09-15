@@ -1,0 +1,36 @@
+{% extends 'aula_virtual/layout.html' %}
+{% load static %}
+{% load i18n %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'main/css/compiled/user-profile.css' %}" type="text/css" media="screen"/>
+
+{% endblock %}
+{% block content %}
+
+ <div id="pad-wrapper" class="user-profile">
+        <!-- header -->
+
+
+        <div class="row header">
+            <div class="col-md-12">
+                <h3 class="name">GEOARTEMIS</h3>
+                <span class="area">Cursos orientados a la industria minera e ingenierìa</span>
+            </div>
+        </div>
+        <div class="row" >
+            <img style="height: 500px;width: 100%;" src="{% static 'aula_virtual/img/cerrover_fondo.jpg' %}" alt="">
+        </div>
+        <div class="row col-md-12 header" style="margin-top:20px; ">
+                        <h4 class="name">Correo Electronico:</h4><br>
+                        <span class="area">contacto@geoartemis.com</span>
+                    </div>
+
+                    <div class="row col-md-12 header">
+                        <h4 class="name">Contacto:</h4>
+                        
+                        <span class="area">RPC:  +51 993405301</span>
+                    </div>
+
+    </div>
+
+{% endblock %}

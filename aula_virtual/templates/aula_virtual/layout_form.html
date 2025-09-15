@@ -1,0 +1,39 @@
+{% extends 'aula_virtual/layout.html' %}
+{% load static %}
+{% load i18n %}
+{% block styles %}
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'fullcalendar/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css' %}"/>
+    <link href="{% static 'fullcalendar/fullcalendar/fullcalendar.css' %}" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.print.css" rel="stylesheet"
+          media='print'/>
+    <link href="{% static 'fullcalendar/fullcalendar/lib/cupertino/jquery-ui.min.css' %}" rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static 'main/css/compiled/calendar.css' %}" type="text/css" media="screen"/>
+{% endblock %}
+{% block content %}
+{% include 'main/hooks/form.html' %}
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'fullcalendar/plugins/moment.min.js' %}"></script>
+ <script type="text/javascript"
+            src="{% static 'fullcalendar/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/locale/es.js"></script>
+<script type="text/javascript">
+     $('.timepicker').datetimepicker({
+                autoclose: true,
+                format: 'dd/mm/yyyy HH:ii p',
+                isRTL: true,
+                showMeridian: true,
+                locale: 'es',
+                pickerPosition: "bottom-right",
+                todayBtn: true
+            });
+</script>
+{% endblock %}
+
+{% if active_item_menu %}
+{% block more_scripts %}
+
+{% endblock%}
+{% endif %}

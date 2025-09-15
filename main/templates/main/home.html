@@ -1,0 +1,144 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+{% block styles %}
+<style type="text/css">
+    .modal-instance{
+        transform: none !important;
+        -webkit-transform:none !important;
+    }
+</style>
+{% endblock %}
+{% block content %}
+
+
+
+            <section class="space-bottom--sm">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2 text-center">
+                            <h3>CURSOS DE CAPACITACIÓN PARA EL SECTOR MINERO E INGENIERÍA </h3>
+                            <p style="font-size: 20px;">
+                                Somos profesionales dedicados a desarrollar actividades, asesoraría, y
+
+capacitación a empresas de industria minera, hidrocarburos y
+
+construcción civil, contamos con staff técnicos conformados por
+
+expertos y profesionales con liderazgo, integridad, innovación,
+
+espíritu de trabajo, responsabilidad, también recomendamos
+
+proyectos mineros que desean involucrarse en minería,
+
+manteniendo una cartera balanceada de proyectos, acumulando
+
+conocimientos como una base competitiva.
+                            </p>
+                        </div>
+                    </div>
+                    <!--end of row-->
+                </div>
+                <!--end of container-->
+            </section>
+    {% if cursos %}
+            <section class="wide-grid masonry">
+                <div class="col-sm-8 col-sm-offset-2 text-center">
+                            <h3> CURSOS DE CAPACITACIÓN
+</h3>
+                </div>
+                <div class="masonry__filters text-center" data-filter-all-text="Show All" style="margin-bottom: 20px;"> 
+                {% for c in cursos %}
+                    <div class="col-md-4 col-sm-6 masonry__item" >
+                        <a href="{% url 'main:list_specific_couses' c.pk %}">
+                            <div class="hover-element hover-element-1" data-title-position="top,center">
+                                <div class="hover-element__initial imageblock__content">
+                                    <img alt="Pic" src="{{ c.file.url }}" />
+                                </div>
+                                <div class="hover-element__reveal" data-overlay="9">
+                                    <div class="boxed" style="text-align: center;">
+                                            <h5>{{ c.name }}</h5>
+                                            <span>
+                                                <em>{{ c.description }}</em>
+                                            </span>
+                                            {% if c.video %}
+                                                <span><div class="modal-instance modal-video-1">
+                                                    
+                                                    <div class="btn modal-trigger" href="#" style="background-color: #630000;">
+                                                        <span class="btn__text">
+                                                            &#9658; Mirar Video
+                                                        </span>
+                                                    </div>
+                                                    <div class="modal-container">
+                                                        <div class="modal-content bg-dark" data-width="60%" data-height="60%">
+                                                            <iframe src="{{c.video}}?autoplay=1" allowfullscreen="allowfullscreen"></iframe>
+                                                        </div>
+                                                        <!--end of modal-content-->
+                                                    </div>
+                                                    <!--end of modal-container-->
+                                                </div>
+                                                <!--end of modal instance-->
+                                                </span>
+                                            {% endif %}
+                                            
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!--end hover element-->
+                        </a>
+                    </div>
+                    {% endfor %}
+
+                </div>
+
+                <!--end masonry container-->
+            </section>
+    {% endif %}
+            <section {% if cursos %}style="margin-top: 200px;"{% endif %}>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2 text-center">
+
+                        </div>
+                    </div>
+                    <!--end of row-->
+                </div>
+                <!--end of container-->
+            </section>
+            <section class="imageblock about-1" >
+                <div class="imageblock__content col-md-5 col-sm-4 pos-right">
+                    <div class="background-image-holder">
+                        <img alt="image" src="{% static 'main/img/large_womeninmining1.jpg' %}" />
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-8">
+                            <div class="subscribe__title">
+                                <h4>Suscribete en nuestra plataforma</h4>
+                            </div>
+                            <form class=" form--no-labels" action="{% url 'main:subscribe' %}" method="post" id="subForm" data-error="Error: Complete bien los datos." data-success="Gracias por subscribirte a Geoartemis.">
+                                {% csrf_token %}
+                                <div class="input-with-icon">
+                                    <label for="fieldName">Nombre y Apellidos</label>
+                                    <i class="icon icon-Male-2"></i>
+                                    <input id="fieldName" name="name" type="text" required/>
+                                </div>
+                                <div class="input-with-icon">
+                                    <label for="fieldEmail">Correo electronico</label>
+                                    <i class="icon icon-Mail-2"></i>
+                                    <input class="validate-required validate-email" id="fieldEmail" name="email" type="email" required />
+                                </div>
+                                <button class="btn btn--primary" type="submit">Subscribirme!</button>
+                            </form>
+                        </div>
+
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end container-->
+            </section>
+
+
+{% endblock %}

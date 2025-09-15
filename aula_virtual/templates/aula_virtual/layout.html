@@ -1,0 +1,71 @@
+{% extends 'aula_virtual/layout_with_out_nav.html' %}
+{% load static %}
+{% block styles %}
+{% endblock %}
+{% block nav %}
+    <li class="settings hidden-xs hidden-sm">
+                    <a href="" role="button">
+                        <i class="icon-cog"></i>
+                    </a>
+            </li>
+{% endblock %}
+{% block sidebar %}
+    <div id="sidebar-nav">
+         <ul id="dashboard-menu">
+            <li>
+                <a href="{% url 'aula_virtual:home'  %}"><i class="icon-home"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'aula_virtual:requirements_list' %}">
+                    <i class="icon-tasks"></i>
+                    <span>Cursos</span>
+                </a>
+            </li>
+             {% if request.user.is_superuser %}
+             <li>
+                <a href="{% url 'aula_virtual:product_list' %}">
+                    <i class="icon-edit"></i>
+                    <span>Paquetes</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'aula_virtual:capacitacion_list' %}">
+                    <i class="icon-th-large"></i>
+                    <span>Capacitaciones</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'aula_virtual:services_list' %}">
+                    <i class="icon-cogs"></i>
+                    <span>Servicios</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'aula_virtual:users' %}">
+                    <i class="icon-group"></i>
+                    <span>Usuarios</span>
+                </a>
+            </li>
+             {% endif %}
+            <li >
+                <a href="{% url 'fullcalendar:list' %}">
+                    <i class="icon-calendar-empty"></i>
+                    <span>Calendarios</span>
+                </a>
+            </li>
+         {% if request.user.is_superuser %}
+            <li>
+                <a href="{% url 'aula_virtual:reports'%}">
+                    <i class="icon-signal"></i>
+                    <span>Reportes</span>
+                </a>
+            </li>
+         {% endif %}
+        </ul>
+    </div>
+{% endblock %}
+{% block scripts %}
+
+{% endblock %}

@@ -1,0 +1,11 @@
+{% load i18n %}
+<div id="pad-wrapper" class="new-user">
+    <div class="row" style="margin-bottom: 20px;">
+        <h3>{{ title|safe|capfirst }}</h3>
+    </div>
+    <div class="row ">
+        <div class="col-md-12 ">
+            {% include 'accounts/_form.html' with form=form %}
+        </div>
+    </div>
+</div>

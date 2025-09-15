@@ -1,0 +1,53 @@
+{% load main_extras %}
+{% load i18n %}
+{% load static %}
+
+{% if field|is_checkbox %}
+    <div class="clearfix"></div>
+    <div>
+        <span>{{ field.label|capfirst }}</span>
+
+        <div class="checkbox-option pull-right {% if field.data %}checked{% endif %}">
+            <div class="inner"></div>
+            {{ field }}
+
+        </div>
+        <div class="clearfix"></div>
+        {% if field.errors %}
+            {% for error in field.errors %}
+                <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% elif field|is_hidden %}
+    {{ field }}
+    {% if field.errors %}
+        {% for error in field.errors %}
+            <span class="help-block">{{ error }}</span>
+        {% endfor %}
+    {% endif %}
+{% elif field|is_selectable %}
+    <div class="input-with-label text-left">
+        <span>{{ field.label|capfirst }} :</span>
+        <div class="select-option">
+            <i class="ti-angle-down"></i>
+            {{ field }}
+        </div>
+        {% if field.errors %}
+            {% for error in field.errors %}
+                <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% else %}
+    <div class="input-with-label text-left">
+        <span>{{ field.label|capfirst }} :</span>
+        {{ field }}
+
+        {% if field.errors %}
+            {% for error in field.errors %}
+                <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endif %}

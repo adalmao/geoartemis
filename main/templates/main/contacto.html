@@ -1,0 +1,66 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+{% block content %}
+<section class="features features-10">
+                <div class="feature bg--white col-md-4 text-center">
+                    <i class="icon icon--lg icon-Map-Marker2"></i>
+                    <h4>Ubícanos</h4>
+                    <p>
+                        Calle 27 de Noviembre #401
+                        <br /> La Libertad - Cerro Colorado
+                        <br />Arequipa - Perú
+                    </p>
+                </div>
+                <div class="feature bg--secondary col-md-4 text-center">
+                    <i class="icon icon--lg icon-Phone-2"></i>
+                    <h4>Llámanos</h4>
+                    <p>
+                        
+                        Movíl RPC: +51 993405301
+                    </p>
+                </div>
+                <div class="feature bg--dark col-md-4 text-center">
+                    <i class="icon icon--lg icon-Computer"></i>
+                    <h4>Contáctanos</h4>
+                    <p>
+                        Email:
+                        <a href="mailto:contacto@geoartemis.com">contacto@geoartemis.com</a>
+                        <br /> Facebook:
+                        <a href="https://www.facebook.com/geoartemis/">@geoartemis_aqp</a>
+                    </p>
+                </div>
+            </section>
+            <section>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <form class="form--square form-email" data-success="Thanks for your enquiry, we'll be in touch soon" data-error="Please fill all required fields">
+                                <h4 class="text-center">Déjanos tu mensaje&hellip;</h4>
+                                <div class="input-with-icon col-sm-12">
+                                    <i class="icon-MaleFemale"></i>
+                                    <input class="validate-required" type="text" name="name" placeholder="Tu Nombre" />
+                                </div>
+                                <div class="input-with-icon col-sm-6">
+                                    <i class="icon-Email"></i>
+                                    <input class="validate-required validate-email" type="email" name="email" placeholder="Dirección Email" />
+                                </div>
+                                <div class="input-with-icon col-sm-6">
+                                    <i class="icon-Phone-2"></i>
+                                    <input type="tel" name="telephone" placeholder="Telefono" />
+                                </div>
+                                <div class="col-sm-12">
+                                    <textarea class="validate-required" name="message" placeholder="Tu Mensaje" rows="8"></textarea>
+                                </div>
+                                <div class="col-sm-12">
+                                    <button type="submit" class="btn btn--primary">
+                                        Enviar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!--end of row-->
+                </div>
+                <!--end of container-->
+            </section>
+{% endblock %}

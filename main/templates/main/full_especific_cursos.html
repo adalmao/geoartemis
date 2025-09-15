@@ -1,0 +1,49 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+{% block content %}
+     {% for curso in especific_courses%}
+        <section class="imageblock about-2 bg--dark">
+            <a href="{% url 'main:specific_detail' curso.pk %}"><div class="imageblock__content col-md-6 col-sm-4 pos-left">
+                    <div class="background-image-holder">
+                        <img alt="image" src="{{ curso.file.url }}" />
+                    </div>
+                </div>
+            </a>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-5 col-md-push-7 col-sm-8 col-sm-push-4">
+                            <h2>{{ curso.name }}</h2>
+                            <p>
+                                    <em>{{ curso.description }}</em>
+                            </p>
+                            <div>
+                                {% if curso.video %}
+                                <div class="modal-instance modal-video-1">
+
+                                    <div class="video-play-icon video-play-icon--sm modal-trigger"></div>
+                                    <span class="h6">Mira esto!</span>
+                                    <div class="modal-container">
+                                        <div class="modal-content bg-dark" data-width="60%" data-height="60%">
+                                            <iframe src="{% url 'main:show_video' curso.pk %}" allowfullscreen="allowfullscreen" ></iframe>
+                                        </div>
+                                        <!--end of modal-content-->
+                                    </div>
+                                    <!--end of modal-container-->
+                                </div>
+                                {% endif %}
+                                <!--end of modal instance-->
+                            </div>
+                        </div>
+                    </div>
+                    <!--end of row-->
+                </div>
+                <!--end of container-->
+            </section>
+     {% endfor %}
+
+
+
+
+
+
+{% endblock %}

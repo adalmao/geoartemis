@@ -1,0 +1,46 @@
+{% extends 'aula_virtual/layout.html' %}
+{% load static %}
+{% block more_styles %}
+{% endblock %}
+{% block content %}
+
+<div id="pad-wrapper" class="users-list">
+    <div class="row header">
+        <h3>{{ title }}</h3>
+    </div>
+    <div id="pad-wrapper" class="users-list">
+    <div class="col-md-6">
+     <table class="table table-hover">
+        <thead>
+        <tr>
+            <th><span class="line"></span>Detalle</th>
+            {% if request.user.is_superuser %}<th><span class="line"></span>Opciones</th>{% endif %}
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for requirement in services_details %}
+        <tr>
+            <td><b>{{requirement.descrip}}</b></td>
+            {% if request.user.is_superuser %}
+                <td>
+                    <ul class="actions">
+                        <li class="last"><a href="{% url 'aula_virtual:services_detail_delete' requirement.pk %}">Delete</a></li>
+                    </ul>
+            </td>
+            {% endif %}
+
+        </tr>
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+    </div>
+    <div class="col-md-6">
+        {% include 'main/hooks/form.html' %}
+    </div>
+
+</div>
+</div>
+{% endblock %}

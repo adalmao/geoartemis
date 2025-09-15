@@ -1,0 +1,107 @@
+{% extends 'aula_virtual/layout.html' %}
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'main/css/compiled/user-list.css'%}" type="text/css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="{% static 'main/css/compiled/tables.css' %}"/>
+    <link href="{% static 'main/css/lib/jquery.dataTables.css' %}" type="text/css" rel="stylesheet"/>
+
+    <!-- this page specific styles -->
+    <link rel="stylesheet" href=" {% static 'main/css/compiled/datatables.css' %}" type="text/css" media="screen"/>
+
+{% endblock %}
+{% block content %}
+
+<!-- settings changer -->
+        <div class="skins-nav">
+            <a href="#" class="skin first_nav selected">
+                <span class="icon"></span><span class="text">Default</span>
+            </a>
+            <a href="#" class="skin second_nav" data-file="css/compiled/skins/dark.css">
+                <span class="icon"></span><span class="text">Dark skin</span>
+            </a>
+        </div>
+
+        <div id="pad-wrapper" class="users-list">
+            <div class="row header">
+                <h3>Users</h3>
+                <div class="col-md-10 col-sm-12 col-xs-12 pull-right">
+                    <a href="{% url 'accounts:user_new' %}" class="btn-flat success pull-right">
+                        <span>&#43;</span>
+                        NEW USER
+                    </a>
+                </div>
+            </div>
+
+            <!-- Users table -->
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-hover" id="example">
+                        <thead>
+                            <tr>
+                                <th class="col-md-3 sortable">
+                                    Name
+                                </th>
+                                <th class="col-md-3 sortable ">
+                                    <span class="line"></span>Email
+                                </th>
+                                <th class="col-md-3 sortable">
+                                    <span class="line"></span>Paquete
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <!-- row -->
+                        <tr class="first">
+                            {% for person in users %}
+                            <td>
+                                <img src="{% static 'aula_virtual/img/contact_icon.png' %}" alt="contact" class="img-circle avatar hidden-phone" />
+                                <a href="" class="name">{{ person.person.get_full_name }}</a>
+                                <span class="subtext">{{ person.person.username }}</span>
+                            </td>
+                            <td>
+                                <a href="">{{ person.person.email }}</a>
+                            </td>
+                            <td>
+                                {% for p in person.package %}
+                                    {{ p.package.title }} 
+                                    $/.{{ p.package.price|floatformat:2}} 
+                                    <a href="{{ p.file.url}}">
+                                     voucher
+
+                                    </a>
+                                    <a href="{% url 'aula_virtual:active_package' p.pk %}">
+                                    {% if p.is_active %}
+                                            <span class="label label-success">Activo</span>
+                                    {% else %}
+                                        <span class="label label-info">Desactivado</span>
+                                    {% endif %}
+                                    </a>
+                                    <br>
+                                {% endfor %}
+                            </td>
+                            
+
+                        </tr>
+                        <!-- row -->
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+           
+            <!-- end users table -->
+        </div>
+
+{% endblock %}
+{% block scripts %}
+    <script src="{% static 'main/js/jquery.dataTables.js' %}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#example').dataTable({
+                "sPaginationType": "full_numbers"
+            });
+        });
+    </script>
+{% endblock %}

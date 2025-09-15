@@ -1,0 +1,355 @@
+{% extends 'aula_virtual/layout.html' %}
+{% load i18n %}
+
+{% block content %}
+    {% if show_courses %}
+    <div id="pad-wrapper" class="users-list">
+        <div class="row header">
+            <h3>{{ title|title }}</h3>
+            <div class="col-md-12 ctrls">
+            {% if request.user.is_superuser and not course.zoom %}
+                <a class="btn btn-primary" id='generatezoom'>Generar Zoom <i class="icon-facetime-video"></i></a>
+            {% else %}
+                {% if course.zoom %}
+                <a class="btn btn-primary" href="{{course.zoom}}" target="_blank">Ingresar Zoom <i class="icon-facetime-video"></i></a>
+                {% endif %}
+                {% if request.user.is_superuser %}
+                    <a class="btn btn-warning" id="refreshZoom"> <i class="icon-refresh"></i></a>
+                    
+                {% endif %}
+            {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            {% if message %}
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <strong>Error!</strong> {{ message }} {{ response }}
+                </div>
+            {% endif %}
+            <div class="col-md-5">
+                <div class="pull-right">
+                    {% if request.user.is_superuser %}
+                    <a href="{% url 'aula_virtual:format_new' course.pk %}" class="btn-flat success pull-right">
+                        <span>&#43;</span>
+                        Nuevo Archivo
+                    </a>
+                    {% endif %}
+                </div>
+                <table class="table table-bordered">
+
+                    <thead>
+                    <tr>
+                        <td><b>Archivo</b></td>
+                        <td><b>Opciones</b></td>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for format in formats_pdf %}
+                        <tr>
+                            <td><a href="" ><i class="icon-download"></i> {{ format.name }}</a></td>
+                        {% if request.user.is_superuser %}
+                            <td>
+                                <div>
+                                    <button type="button" class="btn btn-default" data-toggle="modal"
+                                            data-target="#formatForm{{ format.pk }}"
+                                            data-whatever="r4">Historial
+                                    </button>
+                                    <a href="{% url 'aula_virtual:format_update' requirement_pk format.pk %}"
+                                       class="btn btn-default">Actualizar
+                                    </a>
+                                </div>
+                                <div class="modal fade" id="formatForm{{ format.pk }}" tabindex="-1" role="dialog"
+                                     aria-labelledby="exampleModalLabel">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                {% trans 'format' %}: {{ format.name }}
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close"><span
+                                                        aria-hidden="true">&times;</span></button>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                {% if format.history %}
+                                                    <table class="table">
+                                                        <thead>
+                                                        <tr>
+                                                            <td align="left"><b>Documento</b></td>
+
+                                                            <td align="left"><b>Fecha de modificación</b></td>
+                                                        </tr>
+                                                        </thead>
+
+                                                        <tbody>
+                                                        {% for history in format.history %}
+                                                            <tr>
+                                                                <td align="left"><a href="{{ history.file.url }}" target='_blank'>{{ history.file }}</a></td>
+                                                                <td align="left">{{ history.date_time }}</td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                {% else %}
+                                                    No hay datos historicos
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                                 <td>
+                                    <div>
+                                        <a href="{% url 'aula_virtual:show_file' requirement_pk format.pk  %}"
+                                           class="btn btn-default">Ver archivo</a>
+                                    </div>
+                                 </td>
+                            {% else %}
+                                <td>
+                                    <div>
+                                        <a href="{% url 'aula_virtual:show_file' requirement_pk format.pk  %}"
+                                           class="btn btn-default">Ver archivo</a>
+                                    </div>
+                                 </td>
+
+                            {% endif %}
+
+
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-1"></div>
+
+            <div class="col-md-5">
+                <div class="pull-right">
+                    {% if request.user.is_superuser %}
+                    <a href="{% url 'aula_virtual:format_new' requirement_pk %}" class="btn-flat success pull-right">
+                        <span>&#43;</span>
+                        Nuevo Video
+                    </a>
+                    {% endif %}
+                </div>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <td><b>Video</b></td>
+                        <td><b>Opciones</b></td>
+
+                    </thead>
+
+                    <tbody>
+
+                    {% for format in formats_xlsx %}
+                        <tr>
+                            <td><a href=""> <i class="icon-download"></i> {{ format.name }}</a></td>
+                            {% if request.user.is_superuser %}
+                                <td>
+
+                                <div>
+                                    <button type="button" class="btn btn-default" data-toggle="modal"
+                                            data-target="#formatForm{{ format.pk }}"
+                                            data-whatever="r4">Historial
+                                    </button>
+                                    <a href="{% url 'aula_virtual:format_update' requirement_pk format.pk %}"
+                                       class="btn btn-default">Actualizar</a>
+                                </div>
+
+                                <div class="modal fade" id="formatForm{{ format.pk }}" tabindex="-1" role="dialog"
+                                     aria-labelledby="exampleModalLabel">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                {% trans 'format' %}: {{ format.name }}
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close"><span
+                                                        aria-hidden="true">&times;</span></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                {% if format.history %}
+                                                    <table class="table">
+                                                        <thead>
+                                                        <tr>
+                                                            <td align="left"><b>Documento</b></td>
+
+                                                            <td align="left"><b>Fecha de modificación</b></td>
+                                                        </tr>
+                                                        </thead>
+
+                                                        <tbody>
+                                                        {% for history in format.history %}
+                                                            <tr>
+                                                                <td align="left"><a href="{{ history.file.url }}" target='_blank'>{{ history.file }}</a></td>
+                                                                <td align="left">{{ history.date_time }}</td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                {% else %}
+                                                    No hay datos historicos
+                                                {% endif %}
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                                 <td>
+                                    <div>
+                                        <a href="{% url 'aula_virtual:show_file' requirement_pk format.pk  %}"
+                                           class="btn btn-default">Ver archivo</a>
+                                    </div>
+                                 </td>
+                                {% else %}
+                                <td>
+                                    <div>
+                                        <a href="{% url 'aula_virtual:show_file' requirement_pk format.pk  %}"
+                                           class="btn btn-default">Ver archivo</a>
+                                    </div>
+                                 </td>
+                            {% endif %}
+
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+
+
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+    {% else %}
+        <div id="pad-wrapper" class="users-list">
+        <div class="row">
+        <h4>{{ message_buy }}</h4>
+                <h5>Cuenta Corriente BCP Dolares: 215-35170445-0-98</h5>
+                <h5>CCI: 00221513517044509826</h5>
+
+            {% if show_button %}
+                <a href="{% url 'aula_virtual:buy_package' course.pk %}" class="btn-flat pull-left">
+                    <span>&#43;</span>
+                    Adquirir paquete para este curso
+                </a>
+
+
+            {% endif %}
+        </div>
+
+    {% endif %}
+
+
+
+{% endblock %}
+{% block after_content %}
+{% if request.user.is_superuser and course.zoom %}
+<div class="modal fade" data-backdrop="static" id="ModalZOOM" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Recordatorio</h4>
+            </div>
+            <div class="modal-body">
+                <h2>RECUERDE PROFESOR SUS CREDENCIALES SI DESEA USAR ZOOM:</h2>
+                <h3>CORREO:<b>{{email}}</b></h3>
+                <h3>CONTRASEÑA:<b>{{password}}</b></h3>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+{% endif %}
+<!-- Modal ADD APTTUD -->
+    <div class="modal fade" data-backdrop="static" id="myModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">CREAR REUNION</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal form-apt" role="form" action="">
+                    {% csrf_token %}
+                    <input type="text" name="id_apt" id="id_apt" hidden>
+                    <div class="form-group generando">
+                        <h1>Estamos generando su reunion espere por favor....</h1>
+                    </div>
+                </form>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        {% if request.user.is_superuser %}
+        {% if course.zoom %}
+        $('#ModalZOOM').modal();
+        {% endif %}
+        $('#generatezoom').on('click',function(e){
+            $('#myModal').modal();
+            e.preventDefault();
+            var requestparams={};
+            requestparams["csrfmiddlewaretoken"]="{{ csrf_token }}";
+            $.ajax({
+               type: "POST",
+               url: "{% url 'aula_virtual:generatezoomroom' course.pk %}",
+               data: requestparams,
+               headers: {
+                'Access-Control-Allow-Credentials' : false,
+                'Access-Control-Allow-Origin':'*',
+                'Access-Control-Allow-Methods':'POST',
+                'Access-Control-Allow-Headers':'application/json',
+                },
+               success: function(response) {
+                    var url_ticket='{% url 'aula_virtual:format_list' course.pk%}';
+                    window.location=url_ticket;
+                    $("#myModal").modal('hide');
+
+               },
+               error:function(data){
+                   alert('Intentelo nuevamente.');
+               }
+            });
+            
+        });
+        $('#refreshZoom').on('click',function(e){
+            $('#myModal').modal();
+            e.preventDefault();
+            var requestparams={};
+            requestparams["csrfmiddlewaretoken"]="{{ csrf_token }}";
+            $.ajax({
+               type: "POST",
+               url: "{% url 'aula_virtual:generatezoomroom' course.pk %}",
+               data: requestparams,
+               headers: {
+                'Access-Control-Allow-Credentials' : false,
+                'Access-Control-Allow-Origin':'*',
+                'Access-Control-Allow-Methods':'POST',
+                'Access-Control-Allow-Headers':'application/json',
+                },
+               success: function(response) {
+                    var url_ticket='{% url 'aula_virtual:format_list' course.pk%}';
+                    window.location=url_ticket;
+                    $("#myModal").modal('hide');
+
+               },
+               error:function(data){
+                   alert('Intentelo nuevamente.');
+               }
+            });
+
+        });
+        {% endif %}
+    });
+</script>
+{% endblock %}

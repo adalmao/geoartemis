@@ -1,0 +1,79 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+{% block content %}
+
+    <section class="masonry-contained">
+                <div class="container">
+                    <div class="row">
+                        <div class="masonry">
+                            <div class="masonry__container masonry--animate">
+                                {% for foo in details %}
+                                        <div class="col-sm-6 masonry__item" data-masonry-filter="digital">
+                                    <a href="#">
+                                        <div class="card card-3">
+                                            <div class="card__image">
+                                                {% if foo.service.file %}
+                                                        <img alt="Pic" src="{{ foo.service.file.url }}" />
+                                                {% endif %}
+                                            </div>
+                                            <div class="card__body boxed bg--white">
+                                                <div class="card__title">
+                                                    <h5>{{ foo.service.name }}</h5>
+                                                </div>
+                                                <span>
+                                                <ul>
+                                                    {% for foo2 in foo.detalles %}
+
+                                                       <li><em>*{{ foo2.descrip }}</em></li>
+                                                    {% endfor %}
+                                                </ul>
+
+
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                {% endfor %}
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+    <section>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <form class="form--square form-email" data-success="Thanks for your enquiry, we'll be in touch soon" data-error="Please fill all required fields">
+                                <h4 class="text-center">Solicita tu servicio&hellip;</h4>
+                                <div class="input-with-icon col-sm-12">
+                                    <i class="icon-MaleFemale"></i>
+                                    <input class="validate-required" type="text" name="name" placeholder="Tu Nombre" />
+                                </div>
+                                <div class="input-with-icon col-sm-6">
+                                    <i class="icon-Email"></i>
+                                    <input class="validate-required validate-email" type="email" name="email" placeholder="Dirección Email" />
+                                </div>
+                                <div class="input-with-icon col-sm-6">
+                                    <i class="icon-Phone-2"></i>
+                                    <input type="tel" name="telephone" placeholder="Telefono" />
+                                </div>
+                                <div class="col-sm-12">
+                                    <textarea class="validate-required" name="message" placeholder="Tu Mensaje" rows="8"></textarea>
+                                </div>
+                                <div class="col-sm-12">
+                                    <button type="submit" class="btn btn--primary">
+                                        Enviar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!--end of row-->
+                </div>
+                <!--end of container-->
+            </section>
+
+{% endblock %}

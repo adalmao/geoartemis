@@ -1,0 +1,30 @@
+{% extends 'aula_virtual/layout.html' %}
+{% block content %}
+<div id="pad-wrapper" class="new-user">
+        <div class="row header">
+            <h3>{{ title|safe|capfirst }}</h3>
+        </div>
+        {% if not package_buy_allow %}
+                <h4>{{ message }}</h4>
+                <a href="{% url 'aula_virtual:requirements_list'%}" class="btn-flat pull-left">
+                        <span>&#43;</span>
+                        regresar
+                    </a>
+
+        {% else%}
+            {% if message_error %}
+                    {{ message_error }}
+            {% endif %}
+            <div class="row form-wrapper">
+                    <div class="row form-wrapper">
+                        <div class="col-md-9 with-sidebar">
+                            {% include 'main/hooks/_form.html' with form=form %}
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+        {% endif %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'aula_virtual/layout.html' %}
+{% block content %}
+<div id="pad-wrapper" class="new-user">
+    <div class="row header">
+        <h3>{{ title|safe|capfirst }}</h3>
+    </div>
+    {% if package_exist %}
+            <h4>{{ message }}</h4>
+            <h5>Nombre Paquete: {{ package_course.package.title }}</h5>
+            <a href="{% url 'aula_virtual:edit_package' course.pk %}" class="btn-flat pull-left">
+                    <span>&#43;</span>
+                    editar paquete asociado
+                </a>
+
+    {% else%}
+
+        <div class="row form-wrapper">
+        <div class="col-md-9 with-sidebar">
+            <form action="." method="post">
+                {% csrf_token %}
+
+            <select class="form-control" name="packege_requirement">
+                                {% for foo in packages %}
+                                    <option value="{{ foo.pk}}">{{ foo.title }}</option>
+                                {% endfor %}
+
+                            </select>
+
+
+                <div class="pull-right">
+                    <input type="submit" class="btn btn-primary pull-right" value="{{  save_text|default:'save' }}" name="_save">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% endif %}
+
+</div>
+{% endblock %}
